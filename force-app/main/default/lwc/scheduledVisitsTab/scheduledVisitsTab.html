@@ -1,0 +1,71 @@
+<template>
+    <div class="scheduled-visits-container">
+        <lightning-card class="custom-card" title="Property Visits">
+            <div class="tab-content">
+                <h2 class="section-title">All Property Visits</h2>
+                <template if:true={visits}>
+                    <lightning-datatable
+                        key-field="Id"
+                        data={visits}
+                        columns={visitColumns}
+                        onrowaction={handleVisitRowAction}
+                        hide-checkbox-column
+                        class="custom-datatable"
+                    ></lightning-datatable>
+                </template>
+                <template if:false={visits}>
+                    <p class="no-data">No visits found.</p>
+                </template>
+                <!-- Error Display -->
+                <template if:true={error}>
+                    <div
+                        class="slds-notify slds-notify_alert slds-theme_alert-texture custom-error"
+                        role="alert"
+                    >
+                        <lightning-icon
+                            icon-name="utility:warning"
+                            size="small"
+                            class="slds-m-right_x-small"
+                            aria-hidden="true"
+                        ></lightning-icon>
+                        <span class="slds-text-color_destructive">{error}</span>
+                    </div>
+                </template>
+            </div>
+        </lightning-card>
+        <!-- Modal for Calendar Invite Confirmation -->
+        <template if:true={showInviteModal}>
+            <section role="dialog" class="slds-modal slds-fade-in-open" aria-labelledby="modal-heading-01" aria-modal="true">
+                <div class="slds-modal__container">
+                    <header class="slds-modal__header">
+                        <button
+                            class="slds-button slds-button_icon slds-modal__close"
+                            title="Close"
+                            onclick={closeInviteModal}
+                        >
+                            <lightning-icon icon-name="utility:close" size="small"></lightning-icon>
+                            <span class="slds-assistive-text">Close</span>
+                        </button>
+                        <h2 id="modal-heading-01" class="slds-modal__title">Send Calendar Invite</h2>
+                    </header>
+                    <div class="slds-modal__content slds-p-around_medium">
+                        <p>Generate a calendar invite for the visit to <strong>{selectedVisit.PropertyName}</strong> on <strong>{selectedVisit.VisitDate}</strong> for <strong>{selectedVisit.ClientName}</strong>?</p>
+                    </div>
+                    <footer class="slds-modal__footer">
+                        <lightning-button
+                            variant="neutral"
+                            label="Cancel"
+                            onclick={closeInviteModal}
+                        ></lightning-button>
+                        <lightning-button
+                            variant="brand"
+                            label="Generate Invite"
+                            onclick={confirmSendInvite}
+                        ></lightning-button>
+                    </footer>
+                </div>
+            </section>
+            <div class="slds-backdrop slds-backdrop_open"></div>
+        </template>
+    </div>
+</template>

@@ -1,0 +1,64 @@
+<template>
+    <!-- Main Content -->
+    <div class="main-content">
+        <section>
+            <h2 class="section-title">Properties You Expressed Interest In</h2>
+            <!-- Loading Spinner -->
+            <template if:true={isLoading}>
+                <div class="loading-spinner-container">
+                    <lightning-spinner alternative-text="Loading properties..." size="medium"></lightning-spinner>
+                </div>
+            </template>
+            <!-- Property List -->
+            <template if:false={isLoading}>
+                <div class="property-list">
+                    <template for:each={properties} for:item="property">
+                        <div key={property.propertyData.Id} class="property-card">
+                            <div class="property-image">
+                                <img 
+                                    src={property.ImageUrl} 
+                                    alt={property.propertyData.Name} 
+                                    class="property-img" 
+                                    data-id={property.propertyData.Id}
+                                    onclick={handleImageClick}
+                                    onerror={handleImageError}
+                                />
+                            </div>
+                            <div class="property-details">
+                                <h3>{property.propertyData.Name}</h3>
+                                <div class="property-info">
+                                    <p><strong>Location:</strong> {property.propertyData.Address__c}</p>
+                                    <p><strong>Price:</strong> ₹{property.propertyData.Price__c}</p>
+                                    <p><strong>Type:</strong> {property.propertyData.Property_Type__c}</p>
+                                    <p><strong>Bedrooms:</strong> {property.propertyData.Bedrooms__c}</p>
+                                    <p><strong>Square Footage:</strong> {property.propertyData.Square_Footage__c}</p>
+                                </div>
+                                <div class="owner-info">
+                                    <h4>Owner Details</h4>
+                                    <p><strong>Name:</strong> {property.ownerData.Name__c}</p>
+                                    <p><strong>Phone:</strong> {property.ownerData.Phone__c}</p>
+                                    <p><strong>Email:</strong> {property.ownerData.Email__c}</p>
+                                    <p><strong>Address:</strong> {property.ownerData.Address__c}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </template>
+                    <template if:false={properties.length}>
+                        <div class="no-results">
+                            <h3>No Interested Properties</h3>
+                            <p>You haven't expressed interest in any properties yet.</p>
+                        </div>
+                    </template>
+                </div>
+            </template>
+        </section>
+    </div>
+
+    <!-- Error Message -->
+    <template if:true={error}>
+        <div class="error-message">
+            <lightning-icon icon-name="utility:warning" size="small"></lightning-icon>
+            <span>{error}</span>
+        </div>
+    </template>
+</template>

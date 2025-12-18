@@ -1,0 +1,222 @@
+<template>
+    <div class="property-detail-container">
+        <template if:true={error}>
+            <div class="error-message slide-in">{error}</div>
+        </template>
+        <template if:true={property}>
+            <div class="property-detail-card slide-in">
+                <!-- Back Button -->
+                <div class="back-button-container">
+                    <lightning-button-icon
+                        icon-name="utility:back"
+                        variant="bare"
+                        onclick={handleBack}
+                        class="custom-back-button"
+                        title="Back"
+                    ></lightning-button-icon>
+                </div>
+                <!-- Header -->
+                <div class="property-detail-header fade-in">
+                    <h1 class="property-detail-title">{property.propertyData.Name}</h1>
+                    <div class="property-detail-address">
+                        <lightning-icon icon-name="utility:location" size="x-small" class="property-icon"></lightning-icon>
+                        {property.propertyData.Address__c}
+                    </div>
+                </div>
+                <!-- Image -->
+                <div class="property-detail-image fade-in">
+                    <img
+                        src={property.ImageUrl}
+                        alt="Property Image"
+                        data-id={property.propertyData.Id}
+                        onerror={handleImageError}
+                        class="property-detail-img"
+                    />
+                </div>
+                <!-- Content -->
+                <div class="property-detail-content">
+                    <!-- Left: Details, Amenities, Upload -->
+                    <div class="content-left">
+                        <!-- Property Details -->
+                        <div class="property-detail-info fade-in">
+                            <h2 class="section-title">Details</h2>
+                            <div class="info-grid">
+                                <p><strong>Price:</strong> ₹{property.propertyData.Price__c}</p>
+                                <p><strong>Type:</strong> {property.propertyData.Property_Type__c}</p>
+                                <p><strong>Sq. Ft.:</strong> {property.propertyData.Square_Footage__c}</p>
+                                <p><strong>Bedrooms:</strong> {property.propertyData.Bedrooms__c}</p>
+                                <p><strong>Stage:</strong> {property.propertyData.Property_Stage__c}</p>
+                                <p><strong>Lease:</strong> {property.propertyData.Lease_Terms__c}</p>
+                                <p><strong>Status:</strong> {property.propertyData.Status__c}</p>
+                            </div>
+                        </div>
+                        <!-- Amenities -->
+                        <div class="amenities-box fade-in">
+                            <h2 class="section-title">Amenities</h2>
+                            <template if:true={amenities}>
+                                <ul class="amenities-list">
+                                    <template for:each={amenities} for:item="amenity">
+                                        <li key={amenity} class="amenity-item">
+                                            <lightning-icon icon-name="utility:check" size="x-small" class="amenity-icon"></lightning-icon>
+                                            {amenity}
+                                        </li>
+                                    </template>
+                                </ul>
+                            </template>
+                            <template if:false={amenities}>
+                                <div class="no-amenities">No amenities available</div>
+                            </template>
+                        </div>
+                        <!-- File Upload -->
+                        <template if:true={showFileUpload}>
+                            <div class="upload-section fade-in">
+                                <h2 class="section-title">Upload</h2>
+                                <lightning-file-upload
+                                    label="Signed Contract"
+                                    name="fileUploader"
+                                    accept=".pdf"
+                                    record-id={propertyId}
+                                    onuploadfinished={handleFileUpload}
+                                    disabled={isUploadDisabled}
+                                    class="custom-file-upload"
+                                ></lightning-file-upload>
+                            </div>
+                        </template>
+                    </div>
+                    <!-- Right: Actions -->
+                    <div class="content-right">
+                        <div class="property-detail-actions fade-in">
+                            <h2 class="section-title">Actions</h2>
+                            <div class="action-buttons">
+                                <lightning-button
+                                    label="Schedule Visit"
+                                    onclick={openScheduleVisitModal}
+                                    variant="brand"
+                                    class="custom-action-button"
+                                    disabled={hasScheduledVisit}
+                                ></lightning-button>
+                                <lightning-button
+                                    label="Generate Document"
+                                    onclick={handleGenerateDocument}
+                                    variant="brand"
+                                    class="custom-action-button"
+                                    disabled={isGenerateDisabled}
+                                ></lightning-button>
+                                <lightning-button
+                                    label="Initiate Payment"
+                                    onclick={openPaymentModal}
+                                    variant="success"
+                                    class="custom-action-button"
+                                    disabled={isPaymentDisabled}
+                                ></lightning-button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Schedule Visit Modal -->
+                <template if:true={showScheduleVisitModal}>
+                    <section role="dialog" class="slds-modal slds-fade-in-open" aria-labelledby="modal-heading-visit" aria-modal="true">
+                        <div class="slds-modal__container">
+                            <header class="slds-modal__header">
+                                <button
+                                    class="slds-button slds-button_icon slds-modal__close"
+                                    title="Close"
+                                    onclick={closeScheduleVisitModal}
+                                >
+                                    <lightning-icon icon-name="utility:close" size="small"></lightning-icon>
+                                    <span class="slds-assistive-text">Close</span>
+                                </button>
+                                <h2 id="modal-heading-visit" class="slds-modal__title">Schedule a Visit</h2>
+                            </header>
+                            <div class="slds-modal__content slds-p-around_medium">
+                                <lightning-input
+                                    type="datetime"
+                                    label="Visit Date and Time"
+                                    value={visitDate}
+                                    min={minDateTime}
+                                    onchange={handleVisitDateChange}
+                                    required
+                                    message-when-value-missing="Please select a date and time."
+                                    message-when-range-underflow="Cannot select a past date and time."
+                                ></lightning-input>
+                            </div>
+                            <footer class="slds-modal__footer">
+                                <lightning-button
+                                    label="Cancel"
+                                    onclick={closeScheduleVisitModal}
+                                    variant="neutral"
+                                    class="custom-modal-button"
+                                ></lightning-button>
+                                <lightning-button
+                                    label="Schedule"
+                                    onclick={handleScheduleVisit}
+                                    variant="brand"
+                                    class="custom-modal-button"
+                                    disabled={isScheduleButtonDisabled}
+                                ></lightning-button>
+                            </footer>
+                        </div>
+                    </section>
+                    <div class="slds-backdrop slds-backdrop_open"></div>
+                </template>
+                <!-- Payment Modal -->
+                <template if:true={showPaymentModal}>
+                    <section role="dialog" class="slds-modal slds-fade-in-open" aria-labelledby="modal-heading-payment" aria-modal="true">
+                        <div class="slds-modal__container">
+                            <header class="slds-modal__header">
+                                <button
+                                    class="slds-button slds-button_icon slds-modal__close"
+                                    title="Close"
+                                    onclick={closePaymentModal}
+                                >
+                                    <lightning-icon icon-name="utility:close" size="small"></lightning-icon>
+                                    <span class="slds-assistive-text">Close</span>
+                                </button>
+                                <h2 id="modal-heading-payment" class="slds-modal__title">Initiate Payment</h2>
+                            </header>
+                            <div class="slds-modal__content slds-p-around_medium">
+                                <lightning-input
+                                    type="number"
+                                    label="Payment Amount (₹)"
+                                    value={paymentAmount}
+                                    min="0"
+                                    step="0.01"
+                                    formatter="currency"
+                                    required
+                                    message-when-value-missing="Please enter a payment amount."
+                                    onchange={handlePaymentAmountChange}
+                                ></lightning-input>
+                                <lightning-input
+                                    type="datetime"
+                                    label="Due Date and Time"
+                                    value={paymentDueDate}
+                                    min={minDateTime}
+                                    required
+                                    message-when-value-missing="Please select a due date and time."
+                                    message-when-range-underflow="Cannot select a past date and time."
+                                    onchange={handlePaymentDueDateChange}
+                                ></lightning-input>
+                            </div>
+                            <footer class="slds-modal__footer">
+                                <lightning-button
+                                    label="Cancel"
+                                    onclick={closePaymentModal}
+                                    variant="neutral"
+                                    class="custom-modal-button"
+                                ></lightning-button>
+                                <lightning-button
+                                    label="Initiate Payment"
+                                    onclick={handleInitiatePayment}
+                                    variant="brand"
+                                    class="custom-modal-button"
+                                    disabled={isPaymentButtonDisabled}
+                                ></lightning-button>
+                            </footer>
+                        </div>
+                    </section>
+                    <div class="slds-backdrop slds-backdrop_open"></div>
+                </template>
+            </div>
+        </template>
+    </div>
+</template>

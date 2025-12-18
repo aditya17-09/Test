@@ -1,0 +1,120 @@
+<template>
+    <!-- Hero Section with GIF Background -->
+    <section class="hero-section">
+        <div class="hero-overlay">
+            <div class="slds-container slds-container_center slds-container_x-large hero-content">
+                <h1 class="hero-title">Your Property Portal FAQ Hub</h1>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Info Bar -->
+    <div class="contact-bar">
+        <div class="slds-container slds-container_center slds-container_x-large">
+            <div class="slds-grid slds-gutters">
+                <div class="slds-col">
+                    <span class="contact-item">
+                        <lightning-icon icon-name="utility:world" size="small" class="contact-icon"></lightning-icon>
+                        (IND) 1800-41-99099
+                    </span>
+                </div>
+                <div class="slds-col">
+                    <span class="contact-item">
+                        <lightning-icon icon-name="utility:email" size="small" class="contact-icon"></lightning-icon>
+                        <a href="mailto:support@propertyportal.com" class="contact-link">baldwinerrors@gmail.com</a>
+                    </span>
+                </div>
+                <div class="slds-col">
+                    <span class="contact-item">
+                        <lightning-icon icon-name="utility:chat" size="small" class="contact-icon"></lightning-icon>
+                        <a href="https://wa.me/919876543210" target="_blank" class="contact-link">WhatsApp Us</a>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="slds-container slds-container_center slds-container_x-large faq-content">
+        <div class="slds-grid slds-gutters">
+            <!-- FAQ Sections -->
+            <div class="slds-col slds-size_1-of-1 slds-medium-size_3-of-4">
+                <!-- Category: Property Listings -->
+                <section class="faq-section fade-in">
+                    <h2 class="faq-category">Property Listings</h2>
+                    <lightning-accordion allow-multiple-sections-open>
+                        <lightning-accordion-section name="listing1" label="How do I list my property on Property Portal?">
+                            <p>You can list your property by signing up, navigating to the "List Property" section, and filling out the required details such as location, price, and amenities.</p>
+                        </lightning-accordion-section>
+                        <lightning-accordion-section name="listing2" label="How can I edit my property listing?">
+                            <p>Go to your account dashboard, find the property listing under "My Listings," and click "Edit" to update the details.</p>
+                        </lightning-accordion-section>
+                    </lightning-accordion>
+                </section>
+
+                <!-- Category: Account Management -->
+                <section class="faq-section fade-in">
+                    <h2 class="faq-category">Account Management</h2>
+                    <lightning-accordion allow-multiple-sections-open>
+                        <lightning-accordion-section name="account1" label="How do I register on Property Portal?">
+                            <p>Click "Sign Up" on the homepage, provide your email and password, and verify your account via the confirmation email.</p>
+                        </lightning-accordion-section>
+                        <lightning-accordion-section name="account2" label="How can I reset my password?">
+                            <p>Click "Forgot Password" on the login page, enter your email, and follow the instructions in the reset email.</p>
+                        </lightning-accordion-section>
+                    </lightning-accordion>
+                </section>
+
+                <!-- Category: General Questions -->
+                <section class="faq-section fade-in">
+                    <h2 class="faq-category">General Questions</h2>
+                    <lightning-accordion allow-multiple-sections-open>
+                        <lightning-accordion-section name="general1" label="What types of properties can I find on Property Portal?">
+                            <p>We offer a wide range of properties, including apartments, houses, commercial spaces, and plots, for both sale and rent.</p>
+                        </lightning-accordion-section>
+                        <lightning-accordion-section name="general2" label="How do I contact a property owner?">
+                            <p>Click on the property listing and use the "Contact Owner" button to send a message or view their contact details.</p>
+                        </lightning-accordion-section>
+                    </lightning-accordion>
+                </section>
+            </div>
+
+            <!-- Video Answers and Form -->
+            <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-4">
+                <!-- Video Answers -->
+                <section class="video-section fade-in">
+                    <h2 class="section-title">Video Answers</h2>
+                    <lightning-carousel>
+                        <lightning-carousel-image
+                            src="https://via.placeholder.com/300x180"
+                            header="How to List a Property"
+                            description="A step-by-step guide to listing your property."
+                            href="javascript:void(0)">
+                        </lightning-carousel-image>
+                        <lightning-carousel-image
+                            src="https://via.placeholder.com/300x180"
+                            header="Navigating Your Dashboard"
+                            description="Learn how to manage your account."
+                            href="javascript:void(0)">
+                        </lightning-carousel-image>
+                    </lightning-carousel>
+                </section>
+
+                <!-- Get in Touch Form -->
+                <section class="form-section slide-in">
+                    <h2 class="section-title">Get in Touch</h2>
+                    <lightning-input label="Subject" type="text" value={formData.subject} onchange={handleSubjectChange} required class="slds-m-bottom_small"></lightning-input>
+                    <lightning-textarea label="Description" value={formData.description} onchange={handleDescriptionChange} required class="slds-m-bottom_small"></lightning-textarea>
+                    <lightning-input label="Email" type="email" value={formData.email} onchange={handleEmailChange} required class="slds-m-bottom_small"></lightning-input>
+                    <lightning-combobox label="Priority" value={formData.priority} options={priorityOptions} onchange={handlePriorityChange} required class="slds-m-bottom_small"></lightning-combobox>
+                    <!-- Contact Lookup Field -->
+                    <lightning-record-edit-form object-api-name="Case">
+                        <lightning-input-field field-name="ContactId" value={formData.contactId} onchange={handleContactChange} required class="slds-m-bottom_small"></lightning-input-field>
+                    </lightning-record-edit-form>
+                    <lightning-button label="Submit Inquiry" variant="brand" onclick={handleSubmit} class="submit-button"></lightning-button>
+                </section>
+            </div>
+        </div>
+    </div>
+
+</template>

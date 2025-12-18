@@ -1,0 +1,58 @@
+<template>
+    <div class="owner-portal-container">
+        <lightning-card class="custom-hero-card" title="Owner Portal">
+            <!-- Hero Section with animated title, quotes, and CTA -->
+            <div class="custom-hero">
+                <div class="slds-text-align_center slds-p-around_large">
+                    <!-- Animated hero title -->
+                    <h1
+                        class="slds-text-heading_large custom-hero-title"
+                        aria-label="Welcome to Owner Portal"
+                    >
+                        Welcome to Your Owner Portal
+                    </h1>
+                    <!-- Quote container with sliding quotes -->
+                    <div class="custom-quote-container">
+                        <lightning-icon
+                            icon-name="utility:quote"
+                            size="medium"
+                            class="quote-icon"
+                            aria-hidden="true"
+                        ></lightning-icon>
+                        <p
+                            class="slds-text-body_regular custom-quote"
+                            aria-live="polite"
+                        >
+                            {currentQuote}
+                        </p>
+                    </div>
+                    <!-- Animated CTA button -->
+                    <lightning-button
+                        label="Post a Property"
+                        variant="brand"
+                        onclick={navigateToPropertyEntry}
+                        class="custom-hero-button"
+                        icon-name="utility:add"
+                        icon-position="left"
+                        aria-label="Navigate to Post a Property Page"
+                    ></lightning-button>
+                </div>
+            </div>
+            <!-- Error Display -->
+            <template if:true={error}>
+                <div
+                    class="slds-notify slds-notify_alert slds-theme_alert-texture custom-error"
+                    role="alert"
+                >
+                    <lightning-icon
+                        icon-name="utility:warning"
+                        size="small"
+                        class="slds-m-right_x-small"
+                        aria-hidden="true"
+                    ></lightning-icon>
+                    <span class="slds-text-color_destructive">{error}</span>
+                </div>
+            </template>
+        </lightning-card>
+    </div>
+</template>

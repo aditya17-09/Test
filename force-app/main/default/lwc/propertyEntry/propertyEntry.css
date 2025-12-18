@@ -1,0 +1,134 @@
+/* Custom Card Styling */
+.custom-card {
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background: #f9fafb;
+}
+
+/* Custom Header */
+.custom-header {
+    display: flex;
+    align-items: center;
+    background: linear-gradient(90deg, #0176d3, #014b85);
+    color: white;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+}
+
+/* Custom Section */
+.custom-section {
+    border-radius: 6px;
+    border: 1px solid #e0e5ee;
+    background: #ffffff;
+    transition: all 0.3s ease;
+    margin-bottom: 1rem;
+}
+
+.custom-section:hover {
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+/* Section Title */
+.custom-section-title {
+    color: #16325c;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid #d8dde6;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+}
+
+/* Custom Input Fields */
+.custom-input,
+.custom-textarea,
+.custom-combobox,
+.custom-file-upload {
+    --slds-c-input-border-radius: 6px;
+    --slds-c-input-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.custom-input lightning-input,
+.custom-textarea lightning-textarea,
+.custom-combobox lightning-combobox,
+.custom-file-upload lightning-file-upload {
+    transition: all 0.2s ease;
+}
+
+.custom-input lightning-input:focus,
+.custom-textarea lightning-textarea:focus,
+.custom-combobox lightning-combobox:focus,
+.custom-file-upload lightning-file-upload:focus {
+    box-shadow: 0 0 5px rgba(1, 118, 211, 0.5);
+}
+
+/* Custom Amenities Dropdown */
+.slds-dropdown {
+    max-height: 200px;
+    overflow-y: auto;
+    border: 1px solid #d8dde6;
+    border-radius: 4px;
+    background: #ffffff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.slds-dropdown__item {
+    padding: 0.25rem 0.5rem;
+}
+
+.slds-dropdown__item:hover {
+    background: #f4f6f9;
+}
+
+/* Custom Button */
+.custom-button {
+    border-radius: 20px;
+    padding: 0.5rem 1.5rem;
+    transition: all 0.3s ease;
+    background-color: #0176d3;
+    color: #000000;
+}
+
+.custom-button:hover {
+    transform: scale(1.05);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Error Message */
+.custom-error {
+    margin-top: 1rem;
+    border-radius: 4px;
+    background: #fef2f2;
+    border: 1px solid #d1344b;
+}
+
+/* Fade-In Animation */
+.fade-in {
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .slds-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 480px) {
+    .custom-section-title {
+        font-size: 1rem;
+    }
+    .custom-button {
+        width: 100%;
+    }
+}

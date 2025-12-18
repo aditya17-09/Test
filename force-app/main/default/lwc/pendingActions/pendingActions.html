@@ -1,0 +1,48 @@
+<template>
+    <div class="pending-actions-container">
+        <div class="slds-container slds-container_center slds-container_x-large">
+            <div class="slds-grid slds-gutters">
+                <div class="slds-col slds-size_1-of-1">
+                    <section class="slds-m-vertical_large">
+                        <h1 class="slds-text-heading_large slds-m-bottom_medium">Pending Actions</h1>
+
+                        <!-- Error Message -->
+                        <template if:true={error}>
+                            <div class="slds-notify slds-notify_alert error-message slide-in" role="alert">
+                                <lightning-icon icon-name="utility:warning" size="small" class="slds-m-right_x-small"></lightning-icon>
+                                <span>{error}</span>
+                            </div>
+                        </template>
+
+                        <!-- Pending Actions Table -->
+                        <template if:true={pendingActions}>
+                            <div class="slds-card">
+                                <div class="slds-card__header slds-grid">
+                                    <header class="slds-media slds-media_center">
+                                        <div class="slds-media__body">
+                                            <h2 class="slds-card__header-title">Pending Documents</h2>
+                                        </div>
+                                    </header>
+                                </div>
+                                <div class="slds-card__body">
+                                    <template if:true={pendingActions.length}>
+                                        <lightning-datatable
+                                            key-field="documentId"
+                                            data={pendingActions}
+                                            columns={columns}
+                                            hide-checkbox-column
+                                            onrowaction={handleRowAction}
+                                        ></lightning-datatable>
+                                    </template>
+                                    <template if:false={pendingActions.length}>
+                                        <p class="slds-text-body_regular">No pending actions found.</p>
+                                    </template>
+                                </div>
+                            </div>
+                        </template>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>

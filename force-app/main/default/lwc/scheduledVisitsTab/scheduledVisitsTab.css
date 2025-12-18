@@ -1,0 +1,144 @@
+/* Scheduled Visits Container */
+.scheduled-visits-container {
+    padding: 1.5rem;
+    background: #f8fafc;
+    min-height: 100vh;
+}
+
+/* Card */
+.custom-card {
+    border-radius: 1rem;
+    background: #ffffff;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.custom-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+}
+
+/* Tab Content */
+.tab-content {
+    padding: 1.5rem;
+}
+
+/* Section Title */
+.section-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #1e293b;
+    margin-bottom: 1rem;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    position: relative;
+    animation: fadeIn 0.6s ease-out;
+}
+
+.section-title::after {
+    content: '';
+    position: absolute;
+    bottom: -0.4rem;
+    left: 0;
+    width: 40px;
+    height: 3px;
+    background: #1e3a8a;
+    border-radius: 2px;
+}
+
+/* Datatable */
+.custom-datatable {
+    border-radius: 0.5rem;
+    background: #ffffff;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.custom-datatable .slds-th__action {
+    background: #f1f5f9;
+    color: #1e293b;
+    font-weight: 600;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+.custom-datatable .slds-cell_action:hover {
+    background: #e0e7ff;
+}
+
+/* No Data Message */
+.no-data {
+    font-size: 1rem;
+    color: #64748b;
+    text-align: center;
+    padding: 1.5rem;
+    background: #f1f5f9;
+    border-radius: 0.5rem;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    animation: fadeIn 0.6s ease-out;
+}
+
+/* Error Message */
+.custom-error {
+    background: #fef2f2;
+    color: #b91c1c;
+    padding: 0.75rem;
+    border-radius: 0.5rem;
+    margin: 1rem;
+    font-weight: 500;
+    font-size: 0.9rem;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    display: flex;
+    align-items: center;
+    animation: slideIn 0.6s ease-out;
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideIn {
+    from { transform: translateY(10px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .scheduled-visits-container {
+        padding: 1rem;
+    }
+
+    .custom-card {
+        border-radius: 0.75rem;
+    }
+
+    .tab-content {
+        padding: 1rem;
+    }
+
+    .section-title {
+        font-size: 1.3rem;
+    }
+
+    .no-data {
+        font-size: 0.9rem;
+    }
+
+    .custom-error {
+        font-size: 0.85rem;
+        margin: 0.75rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .section-title {
+        font-size: 1.2rem;
+    }
+
+    .no-data {
+        font-size: 0.85rem;
+    }
+
+    .custom-error {
+        font-size: 0.8rem;
+    }
+}

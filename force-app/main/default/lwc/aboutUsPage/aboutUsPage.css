@@ -1,0 +1,211 @@
+.hero-section {
+    position: relative;
+    height: 500px;
+    background: url('https://plus.unsplash.com/premium_photo-1711471921473-d2f9ba61794e?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D') no-repeat center center/cover;
+    margin-bottom: 40px;
+}
+
+.hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.hero-content {
+    text-align: center;
+    color: white;
+}
+
+.hero-title {
+    font-size: 3rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.hero-description {
+    font-size: 1.25rem;
+    max-width: 600px;
+    margin: 0 auto;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.mission-vision-section {
+    padding: 60px 0;
+}
+
+.mission-box, .vision-box {
+    background: #f8f9fa;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.mission-box:hover, .vision-box:hover {
+    transform: translateY(-5px);
+}
+
+.section-title {
+    font-size: 2rem;
+    color: #0176d3;
+    margin-bottom: 20px;
+}
+
+.section-text {
+    font-size: 1.1rem;
+    color: #333;
+}
+
+.milestones-section {
+    background: #0176d3;
+    padding: 60px 0;
+    color: white;
+}
+
+.center-title {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.milestones-grid {
+    text-align: center;
+}
+
+.milestone-card {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 20px;
+    border-radius: 10px;
+    transition: background 0.3s ease;
+}
+
+.milestone-card:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.milestone-title {
+    font-size: 1.5rem;
+    margin: 0;
+}
+.team-section {
+    padding: 60px 0;
+    text-align: center; /* Center text content within the section */
+}
+
+.team-grid {
+    display: flex; /* Use flexbox for alignment */
+    justify-content: center; /* Center content horizontally */
+    align-items: center; /* Align items in the center vertically */
+    flex-wrap: wrap; /* Allow wrapping on smaller screens */
+    margin-top: 40px;
+}
+
+.team-card {
+    background: white;
+    padding: 40px 30px; /* Increase padding for a more spacious look */
+    border-radius: 15px; /* Rounded corners for a modern look */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* Stronger shadow effect */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    max-width: 600px; /* Set a larger max-width for wide appearance */
+    margin: 20px; /* Add margin for spacing between cards */
+    transform: scale(1.03); /* Slight scale for impact */
+}
+
+.team-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.25); /* Enhanced shadow on hover */
+}
+
+.team-photo {
+    width: 180px; /* Larger photo size */
+    height: 180px; /* Larger photo size */
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 20px;
+    border: 4px solid #0176d3; /* Border around photo for emphasis */
+}
+
+.team-name {
+    font-size: 2rem; /* Larger font size */
+    color: #0176d3;
+    margin-bottom: 10px;
+}
+
+.team-role {
+    font-size: 1.25rem; /* Larger role font size */
+    color: #666;
+    margin-bottom: 15px; /* Increased space after the role */
+}
+
+.team-bio {
+    font-size: 1.05rem; /* Slightly larger font size for bio */
+    color: #333;
+    margin-bottom: 15px; /* Added spacing at bottom */
+}
+
+.social-links {
+    margin-top: 20px;
+}
+
+.social-icon {
+    width: 35px; /* Larger icon size */
+    height: 35px; /* Larger icon size */
+    margin-right: 12px;
+    opacity: 0.8; /* Slightly more visible by default */
+    transition: opacity 0.3s, transform 0.3s; /* Add hover effects */
+}
+
+.social-icon:hover {
+    opacity: 1;
+    transform: scale(1.1); /* Slight scaling on hover */
+}
+
+.fade-in {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.fade-in.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+@media (max-width: 768px) {
+    .hero-section {
+        height: 300px;
+    }
+
+    .hero-title {
+        font-size: 2rem;
+    }
+
+    .hero-description {
+        font-size: 1rem;
+    }
+
+    .mission-vision-section, .milestones-section, .team-section {
+        padding: 40px 0;
+    }
+
+    .section-title {
+        font-size: 1.5rem;
+    }
+
+    .team-card {
+        margin-bottom: 20px;
+        max-width: 90%; /* Make sure card is responsive */
+        transform: none; /* Remove scale effect on smaller screens */
+    }
+
+    .team-photo {
+        width: 140px; /* Adjusted photo size for smaller screens */
+        height: 140px;
+    }
+}

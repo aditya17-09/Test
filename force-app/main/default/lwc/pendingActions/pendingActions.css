@@ -1,0 +1,20 @@
+.pending-actions-container {
+    padding: 20px;
+}
+
+.error-message {
+    background-color: #fce4e4;
+    border: 1px solid #cc3340;
+    padding: 10px;
+    margin-bottom: 20px;
+}
+
+.custom-file-upload {
+    margin-top: 10px;
+}
+
+.slds-box {
+    background: #f9f9f9;
+    padding: 15px;
+    border-radius: 5px;
+}

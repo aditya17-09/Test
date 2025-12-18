@@ -1,0 +1,86 @@
+<!-- Main container for the Owner Properties page -->
+<template>
+    <lightning-card class="slds-theme_default custom-card" title="Your Properties">
+        <!-- Header with navigation back to homepage -->
+        <div slot="title">
+            <div class="slds-grid slds-gutters">
+                <div class="slds-col">
+                    <h2 class="slds-text-heading_medium custom-title">Your Properties</h2>
+                </div>
+                <div class="slds-col slds-text-align_right">
+                    <lightning-button
+                        label="Back to Home"
+                        variant="neutral"
+                        onclick={navigateToHome}
+                        class="custom-button custom-back-button"
+                        icon-name="utility:back"
+                        icon-position="left"
+                        aria-label="Navigate back to Owner Portal Home"
+                    ></lightning-button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Properties Section -->
+        <div class="slds-p-around_medium">
+            <template if:true={properties}>
+                <div class="slds-grid slds-wrap slds-gutters">
+                    <!-- Iterate over properties -->
+                    <template for:each={properties} for:item="property">
+                        <div
+                            key={property.propertyData.Id}
+                            class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2 slds-large-size_1-of-3 slds-p-around_small custom-property-wrapper"
+                            style={property.animationStyle}
+                        >
+                            <!-- Property card -->
+                            <lightning-card class="custom-property-card">
+                                <div slot="title" class="slds-text-title_bold">
+                                    {property.propertyData.Name}
+                                </div>
+                                <div class="slds-p-around_small">
+                                    <!-- Property image with zoom effect -->
+                                    <img
+                                        if:true={property.imageUrl}
+                                        src={property.imageUrl}
+                                        alt="Property Image"
+                                        class="slds-align_absolute-center custom-image"
+                                        aria-label={property.ariaLabel}
+                                    />
+                                    <!-- Property details -->
+                                    <p><strong>Address:</strong> {property.propertyData.Address__c}</p>
+                                    <p><strong>Price:</strong> ${property.propertyData.Price__c}</p>
+                                    <p><strong>Type:</strong> {property.propertyData.Property_Type__c}</p>
+                                    <p><strong>Bedrooms:</strong> {property.propertyData.Bedrooms__c}</p>
+                                    <p><strong>Status:</strong> {property.propertyData.Status__c}</p>
+                                    <p><strong>Interest Count:</strong> {property.interestCount}</p>
+                                </div>
+                            </lightning-card>
+                        </div>
+                    </template>
+                </div>
+            </template>
+            <!-- No properties message -->
+            <template if:false={properties}>
+                <p class="slds-text-align_center custom-empty-message">
+                    No properties found. Add a property to get started!
+                </p>
+            </template>
+        </div>
+
+        <!-- Error Display -->
+        <template if:true={error}>
+            <div
+                class="slds-notify slds-notify_alert slds-theme_alert-texture custom-error"
+                role="alert"
+            >
+                <lightning-icon
+                    icon-name="utility:warning"
+                    size="small"
+                    class="slds-m-right_x-small"
+                    aria-hidden="true"
+                ></lightning-icon>
+                <span class="slds-text-color_destructive">{error}</span>
+            </div>
+        </template>
+    </lightning-card>
+</template>

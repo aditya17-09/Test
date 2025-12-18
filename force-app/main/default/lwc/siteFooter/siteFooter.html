@@ -1,0 +1,53 @@
+<template>
+    <footer class="footer">
+        <div class="slds-container slds-container_center slds-container_x-large">
+            <div class="slds-grid slds-gutters footer-grid">
+                <!-- Company Section -->
+                <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-3">
+                    <h3 class="footer-heading">Company</h3>
+                    <ul class="footer-links">
+                        <li><a href="javascript:void(0)" onclick={navigateToAboutUs} class="footer-link">About us</a></li>
+                        <li><a href="/contact-us" class="footer-link">Contact us</a></li>
+                    </ul>
+                </div>
+
+                <!-- Contact Us Section -->
+                <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-3">
+                    <h3 class="footer-heading">Contact Us</h3>
+                    <p class="footer-contact">Toll Free - 1800 41 99099</p>
+                    <p class="footer-contact">Email - <a href="mailto:baldwinerrors@gmail.com" class="footer-link">baldwinerrors@gmail.com</a></p>
+                    <h3 class="footer-heading footer-social-heading">Connect with us</h3>
+                    <div class="social-icons">
+                        <a href="https://facebook.com" target="_blank" class="social-icon">
+                            <img src={facebookIcon} alt="Facebook" class="social-icon-img" />
+                        </a>
+                        <a href="https://youtube.com" target="_blank" class="social-icon">
+                            <img src={youtubeIcon} alt="YouTube" class="social-icon-img" />
+                        </a>
+                        <a href="https://twitter.com" target="_blank" class="social-icon">
+                            <img src={twitterIcon} alt="Twitter" class="social-icon-img" />
+                        </a>
+                        <a href="https://instagram.com" target="_blank" class="social-icon">
+                            <img src={instagramIcon} alt="Instagram" class="social-icon-img" />
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Spacer for Alignment -->
+                <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-3"></div>
+            </div>
+
+            <!-- Legal Text -->
+            <div class="legal-text slds-text-align_center">
+                <p>
+                    Usage of PropertyPortal to upload content showing area in non standard units or which enables targeting by religion/community/caste/race is prohibited. Please report inappropriate content by writing to us at <a href="mailto:report@propertyportal.com" class="footer-link">baldwinerrors@gmail.com</a>
+                </p>
+                <p>
+                    All trademarks are the property of their respective owners.<br />
+                    All rights reserved - Property Portal Ltd.<br />
+                    A Property Portal venture
+                </p>
+            </div>
+        </div>
+    </footer>
+</template>

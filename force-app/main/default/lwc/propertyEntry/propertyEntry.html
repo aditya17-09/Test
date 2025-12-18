@@ -1,0 +1,99 @@
+<template>
+    <lightning-card class="slds-theme_default custom-card">
+        <div slot="title" class="slds-p-around_small custom-header">
+            <lightning-icon icon-name="utility:home" size="medium" class="slds-m-right_small"></lightning-icon>
+            <span class="slds-text-heading_medium">Post a New Property</span>
+        </div>
+        <div class="slds-p-around_medium">
+            <div class="slds-box slds-box_small custom-section">
+                <div class="slds-text-heading_small custom-section-title">
+                    <lightning-icon icon-name="utility:record_create" size="small" class="slds-m-right_x-small"></lightning-icon>
+                    Property Details
+                </div>
+                <div class="slds-grid slds-gutters">
+                    <div class="slds-col">
+                        <lightning-input label="Name" type="text" value={name} onchange={handleNameChange} required placeholder="Enter property name..." class="custom-input"></lightning-input>
+                    </div>
+                    <div class="slds-col">
+                        <lightning-input label="Address" type="text" value={address} onchange={handleAddressChange} required placeholder="Enter property address..." class="custom-input"></lightning-input>
+                    </div>
+                </div>
+                <div class="slds-grid slds-gutters slds-m-top_small">
+                    <div class="slds-col">
+                        <lightning-input label="Price" type="number" value={price} onchange={handlePriceChange} required placeholder="Enter price..." min="0" step="0.01" class="custom-input"></lightning-input>
+                    </div>
+                    <div class="slds-col">
+                        <lightning-combobox label="Property Type" value={propertyType} options={propertyTypeOptions} onchange={handlePropertyTypeChange} required placeholder="Select property type..." class="custom-combobox"></lightning-combobox>
+                    </div>
+                </div>
+                <div class="slds-grid slds-gutters slds-m-top_small">
+                    <div class="slds-col">
+                        <lightning-combobox label="Bedrooms" value={bedrooms} options={bedroomOptions} onchange={handleBedroomsChange} required placeholder="Select number of bedrooms..." class="custom-combobox"></lightning-combobox>
+                    </div>
+                    <div class="slds-col">
+                        <lightning-combobox label="Status" value={status} options={statusOptions} onchange={handleStatusChange} required placeholder="Select status..." class="custom-combobox"></lightning-combobox>
+                    </div>
+                </div>
+                <div class="slds-grid slds-gutters slds-m-top_small">
+                    <div class="slds-col">
+                        <lightning-input label="Square Footage" type="number" value={squareFootage} onchange={handleSquareFootageChange} placeholder="Enter square footage..." min="0" step="1" class="custom-input"></lightning-input>
+                    </div>
+                    <div class="slds-col">
+                        <lightning-file-upload label="Upload Photos" name="fileUploader" accept=".jpg,.jpeg,.png" onuploadfinished={handleUploadFinished} class="custom-file-upload"></lightning-file-upload>
+                    </div>
+                </div>
+                <div class="slds-grid slds-gutters slds-m-top_small">
+                    <div class="slds-col">
+                        <label class="slds-form-element__label">Amenities</label>
+                        <div class="slds-form-element__control">
+                            <template for:each={amenityOptions} for:item="option">
+                                <lightning-input key={option.value} type="checkbox" label={option.label} value={option.value} checked={option.checked} onchange={handleAmenityChange} class="slds-m-around_xx-small"></lightning-input>
+                            </template>
+                        </div>
+                    </div>
+                </div>
+                <div class="slds-grid slds-gutters slds-m-top_small">
+                    <div class="slds-col">
+                        <lightning-textarea label="Lease Terms" value={leaseTerms} onchange={handleLeaseTermsChange} placeholder="Specify lease terms..." class="custom-textarea"></lightning-textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="slds-box slds-box_small custom-section slds-m-top_medium">
+                <div class="slds-text-heading_small custom-section-title">
+                    <lightning-icon icon-name="utility:user" size="small" class="slds-m-right_x-small"></lightning-icon>
+                    Property Owner Details
+                </div>
+                <div class="slds-grid slds-gutters">
+                    <div class="slds-col">
+                        <lightning-input label="Owner Name" type="text" value={ownerName} onchange={handleOwnerNameChange} required placeholder="Enter owner name..." class="custom-input"></lightning-input>
+                    </div>
+                    <div class="slds-col">
+                        <lightning-input label="Owner Email" type="email" value={ownerEmail} onchange={handleOwnerEmailChange} required placeholder="Enter owner email..." class="custom-input"></lightning-input>
+                    </div>
+                </div>
+                <div class="slds-grid slds-gutters slds-m-top_small">
+                    <div class="slds-col">
+                        <lightning-input label="Owner Phone" type="tel" value={ownerPhone} onchange={handleOwnerPhoneChange} placeholder="Enter owner phone..." class="custom-input"></lightning-input>
+                    </div>
+                    <div class="slds-col">
+                        <lightning-input label="Owner Address" type="text" value={ownerAddress} onchange={handleOwnerAddressChange} placeholder="Enter owner address..." class="custom-input"></lightning-input>
+                    </div>
+                </div>
+                <div class="slds-grid slds-gutters slds-m-top_small">
+                    <div class="slds-col">
+                        <lightning-combobox label="Owner Type" value={ownerType} options={ownerTypeOptions} onchange={handleOwnerTypeChange} required placeholder="Select owner type..." class="custom-combobox"></lightning-combobox>
+                    </div>
+                </div>
+            </div>
+            <div class="slds-m-top_medium slds-text-align_center">
+                <lightning-button label="Save Property" variant="brand" onclick={handleSave} class="custom-button" icon-name="utility:save" icon-position="left"></lightning-button>
+            </div>
+            <template if:true={error}>
+                <div class="slds-notify slds-notify_alert slds-theme_alert-texture custom-error" role="alert">
+                    <lightning-icon icon-name="utility:warning" size="small" class="slds-m-right_x-small"></lightning-icon>
+                    <span class="slds-text-color_destructive">{error}</span>
+                </div>
+            </template>
+        </div>
+    </lightning-card>
+</template>
