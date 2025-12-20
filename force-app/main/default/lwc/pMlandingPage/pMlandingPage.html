@@ -1,137 +1,121 @@
 <template>
-    <!-- HERO -->
+
+    <!-- HEADER -->
+    <header class="top-bar">
+        <h1>🏡 PropertyMind</h1>
+
+        <div class="top-actions">
+            <button onclick={toggleTheme} class="icon-btn">
+                {themeIcon}
+            </button>
+
+            <button class="icon-btn" onclick={toggleFavoritesDrawer}>
+                ❤️ {favorites.length}
+            </button>
+        </div>
+    </header>
+
+    <!-- HERO SEARCH -->
     <section class="hero">
-        <div class="hero-overlay"></div>
+        <h2>Discover Homes You’ll Love</h2>
+        <p>Smart search • Real insights • Better decisions</p>
 
-        <div class="hero-inner">
-            <h1 class="hero-title fade-in">
-                Find Your <span>Perfect Property</span>
-            </h1>
-            <p class="hero-subtitle fade-in">
-                Buy, Rent or Invest — curated homes just for you
-            </p>
+        <div class="search-card">
+            <lightning-combobox
+                label="Property Type"
+                value={propertyType}
+                options={propertyTypeOptions}
+                onchange={handlePropertyTypeChange}>
+            </lightning-combobox>
 
-            <!-- SEARCH CARD -->
-            <div class="search-glass fade-in">
-                <div class="slds-grid slds-gutters_medium">
-                    <div class="slds-col">
-                        <lightning-combobox
-                            label="Property Type"
-                            value={propertyType}
-                            options={propertyTypeOptions}
-                            onchange={handlePropertyTypeChange}>
-                        </lightning-combobox>
+            <lightning-input
+                label="Location"
+                type="text"
+                data-id="location"
+                value={location}
+                onchange={handleLocationChange}
+                required>
+            </lightning-input>
+
+            <lightning-button
+                label="Search"
+                variant="brand"
+                onclick={handleSearch}>
+            </lightning-button>
+        </div>
+    </section>
+
+    <!-- SKELETON -->
+    <template if:true={isLoading}>
+        <div class="grid">
+            <div class="skeleton" for:each={skeletons} for:item="s" key={s}></div>
+        </div>
+    </template>
+
+    <!-- PROPERTY GRID -->
+    <section class="grid" if:false={isLoading}>
+        <template for:each={displayedProperties} for:item="property">
+            <article key={property.propertyData.Id}
+                     class="card"
+                     data-id={property.propertyData.Id}
+                     onclick={navigateToPropertyDetail}>
+
+                <img src={property.ImageUrl}
+                     data-id={property.propertyData.Id}
+                     onerror={handleImageError} />
+
+                <span class="price">₹{property.propertyData.Price__c}</span>
+
+                <button class="fav"
+                        data-id={property.propertyData.Id}
+                        onclick={toggleFavorite}>
+                    ❤️
+                </button>
+
+                <div class="content">
+                    <h3>{property.propertyData.Name}</h3>
+                    <p>{property.propertyData.Address__c}</p>
+
+                    <div class="meta">
+                        <span>{property.Bedrooms}</span>
+                        <span>{property.propertyData.Property_Type__c}</span>
+                        <span class="ai">AI: Fair Price</span>
                     </div>
 
-                    <div class="slds-col">
-                        <lightning-input
-                            label="Location"
-                            type="text"
-                            data-id="location"
-                            value={location}
-                            onchange={handleLocationChange}
-                            placeholder="City or Locality"
-                            required>
-                        </lightning-input>
-                    </div>
-
-                    <div class="slds-col slds-align-bottom">
+                    <div class="actions">
                         <lightning-button
-                            label="Search Properties"
-                            variant="brand"
-                            icon-name="utility:search"
-                            onclick={handleSearch}
-                            class="search-btn">
+                            label="Interest"
+                            data-id={property.propertyData.Id}
+                            onclick={handleExpressInterest}>
                         </lightning-button>
+
+                        <input type="checkbox"
+                               data-id={property.propertyData.Id}
+                               onchange={toggleCompare} />
+                        Compare
                     </div>
                 </div>
-
-                <!-- RECENT -->
-                <div class="recent">
-                    <span>Recent:</span>
-                    <template for:each={recentSearches} for:item="search">
-                        <button key={search}
-                                class="recent-chip"
-                                onclick={handleRecentSearch}>
-                            {search}
-                        </button>
-                    </template>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- RESULTS -->
-    <section class="content">
-        <h2 class="section-title">
-            Properties in <span>{searchedCity}</span>
-        </h2>
-
-        <div class="property-grid">
-            <template for:each={displayedProperties} for:item="property">
-                <article key={property.propertyData.Id}
-                         class="property-card slide-in"
-                         data-id={property.propertyData.Id}
-                         onclick={navigateToPropertyDetail}>
-
-                    <div class="image-wrapper">
-                        <img src={property.ImageUrl}
-                             data-id={property.propertyData.Id}
-                             onerror={handleImageError}/>
-                        <span class="price-chip">
-                            ₹{property.propertyData.Price__c}
-                        </span>
-                    </div>
-
-                    <div class="card-body">
-                        <h3>{property.propertyData.Name}</h3>
-                        <p class="address">
-                            {property.propertyData.Address__c}
-                        </p>
-
-                        <div class="meta">
-                            <span>{property.Bedrooms}</span>
-                            <span>{property.propertyData.Property_Type__c}</span>
-                        </div>
-
-                        <div class="actions">
-                            <lightning-button
-                                label="Interest"
-                                variant="brand"
-                                data-id={property.propertyData.Id}
-                                onclick={handleExpressInterest}>
-                            </lightning-button>
-
-                            <lightning-button
-                                label="Owner"
-                                variant="neutral"
-                                data-id={property.propertyData.Id}
-                                onclick={handleContactOwner}>
-                            </lightning-button>
-                        </div>
-                    </div>
-                </article>
-            </template>
-        </div>
-
-        <!-- EMPTY -->
-        <template if:true={noResultsMessage}>
-            <div class="empty-state">
-                <p>{noResultsMessage}</p>
-                <blockquote>
-                    “The best investment on Earth is Earth.”
-                </blockquote>
-            </div>
-        </template>
-
-        <!-- SHOW MORE -->
-        <template if:true={showMoreVisible}>
-            <div class="center">
-                <lightning-button
-                    label="Load More"
-                    onclick={handleShowMore}>
-                </lightning-button>
-            </div>
+            </article>
         </template>
     </section>
+
+    <!-- EMPTY STATE -->
+    <template if:true={noResultsMessage}>
+        <div class="empty">
+            <h3>No homes found</h3>
+            <p>{noResultsMessage}</p>
+            <blockquote>
+                “The best investment on Earth is Earth.”
+            </blockquote>
+        </div>
+    </template>
+
+    <!-- COMPARE BAR -->
+    <template if:true={compareList.length}>
+        <div class="compare-bar">
+            <span>{compareList.length} selected</span>
+            <lightning-button label="Compare Now"></lightning-button>
+        </div>
+    </template>
+
 </template>
