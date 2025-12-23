@@ -1,121 +1,271 @@
 <template>
-
-    <!-- HEADER -->
-    <header class="top-bar">
-        <h1>🏡 PropertyMind</h1>
-
-        <div class="top-actions">
-            <button onclick={toggleTheme} class="icon-btn">
-                {themeIcon}
-            </button>
-
-            <button class="icon-btn" onclick={toggleFavoritesDrawer}>
-                ❤️ {favorites.length}
-            </button>
-        </div>
-    </header>
-
-    <!-- HERO SEARCH -->
-    <section class="hero">
-        <h2>Discover Homes You’ll Love</h2>
-        <p>Smart search • Real insights • Better decisions</p>
-
-        <div class="search-card">
-            <lightning-combobox
-                label="Property Type"
-                value={propertyType}
-                options={propertyTypeOptions}
-                onchange={handlePropertyTypeChange}>
-            </lightning-combobox>
-
-            <lightning-input
-                label="Location"
-                type="text"
-                data-id="location"
-                value={location}
-                onchange={handleLocationChange}
-                required>
-            </lightning-input>
-
-            <lightning-button
-                label="Search"
-                variant="brand"
-                onclick={handleSearch}>
-            </lightning-button>
-        </div>
-    </section>
-
-    <!-- SKELETON -->
-    <template if:true={isLoading}>
-        <div class="grid">
-            <div class="skeleton" for:each={skeletons} for:item="s" key={s}></div>
-        </div>
-    </template>
-
-    <!-- PROPERTY GRID -->
-    <section class="grid" if:false={isLoading}>
-        <template for:each={displayedProperties} for:item="property">
-            <article key={property.propertyData.Id}
-                     class="card"
-                     data-id={property.propertyData.Id}
-                     onclick={navigateToPropertyDetail}>
-
-                <img src={property.ImageUrl}
-                     data-id={property.propertyData.Id}
-                     onerror={handleImageError} />
-
-                <span class="price">₹{property.propertyData.Price__c}</span>
-
-                <button class="fav"
-                        data-id={property.propertyData.Id}
-                        onclick={toggleFavorite}>
-                    ❤️
-                </button>
-
-                <div class="content">
-                    <h3>{property.propertyData.Name}</h3>
-                    <p>{property.propertyData.Address__c}</p>
-
-                    <div class="meta">
-                        <span>{property.Bedrooms}</span>
-                        <span>{property.propertyData.Property_Type__c}</span>
-                        <span class="ai">AI: Fair Price</span>
+    <!-- Hero Section -->
+    <div class="hero-section">
+        <div class="slds-container slds-container_center slds-container_large hero-content">
+            <div class="search-box fade-in">
+                <div class="slds-grid slds-gutters_small search-input">
+                    <div class="slds-col">
+                        <lightning-combobox
+                            label="Property Type"
+                            value={propertyType}
+                            options={propertyTypeOptions}
+                            onchange={handlePropertyTypeChange}
+                            placeholder="Select Property Type"
+                            class="custom-combobox"
+                        ></lightning-combobox>
                     </div>
-
-                    <div class="actions">
+                    <div class="slds-col">
+                        <lightning-input
+                            label="Search Locality"
+                            type="text"
+                            value={location}
+                            onchange={handleLocationChange}
+                            placeholder="Enter city or locality..."
+                            class="custom-input"
+                            required
+                            data-id="location"
+                        ></lightning-input>
+                    </div>
+                    <div class="slds-col slds-size_1-of-4">
                         <lightning-button
-                            label="Interest"
-                            data-id={property.propertyData.Id}
-                            onclick={handleExpressInterest}>
-                        </lightning-button>
-
-                        <input type="checkbox"
-                               data-id={property.propertyData.Id}
-                               onchange={toggleCompare} />
-                        Compare
+                            label="Search"
+                            variant="brand"
+                            onclick={handleSearch}
+                            class="custom-search-button"
+                            icon-name="utility:search"
+                            icon-position="left"
+                        ></lightning-button>
                     </div>
                 </div>
-            </article>
-        </template>
-    </section>
-
-    <!-- EMPTY STATE -->
-    <template if:true={noResultsMessage}>
-        <div class="empty">
-            <h3>No homes found</h3>
-            <p>{noResultsMessage}</p>
-            <blockquote>
-                “The best investment on Earth is Earth.”
-            </blockquote>
+                <!-- Recent Searches -->
+                <div class="recent-searches slds-m-top_small">
+                    <span>Recent Searches:</span>
+                    <template for:each={recentSearches} for:item="search">
+                        <a key={search} href="javascript:void(0)" class="recent-search-link" onclick={handleRecentSearch}>{search}</a>
+                    </template>
+                </div>
+            </div>
         </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="slds-container slds-container_center slds-container_x-large">
+        <div class="slds-grid slds-gutters main-content">
+            <div class="slds-col slds-size_1-of-1">
+                <section class="slds-m-vertical_large">
+                    <h2 class="slds-text-heading_medium slds-m-bottom_medium custom-section-title">
+                        Properties in {searchedCity}
+                    </h2>
+                    <div class="property-list">
+                        <template for:each={displayedProperties} for:item="property">
+                            <div key={property.propertyData.Id} class="property-card slide-in">
+                                <div class="property-image">
+                                    <img src={property.ImageUrl} alt={property.propertyData.Name} class="property-img" onerror={handleImageError} data-id={property.propertyData.Id} />
+                                </div>
+                                <div class="property-details">
+                                    <h3 class="property-title">{property.propertyData.Name}</h3>
+                                    <div class="property-info">
+                                        <p class="property-detail">
+                                            <lightning-icon icon-name="utility:location" size="x-small" class="property-icon"></lightning-icon>
+                                            {property.propertyData.Address__c}
+                                        </p>
+                                        <p class="property-detail">
+                                            <lightning-icon icon-name="utility:moneybag" size="x-small" class="property-icon"></lightning-icon>
+                                            ₹{property.propertyData.Price__c}
+                                        </p>
+                                        <p class="property-detail">
+                                            <lightning-icon icon-name="utility:home" size="x-small" class="property-icon"></lightning-icon>
+                                            {property.propertyData.Property_Type__c}
+                                        </p>
+                                        <p class="property-detail">
+                                            <lightning-icon icon-name="utility:bed" size="x-small" class="property-icon"></lightning-icon>
+                                            {property.Bedrooms}
+                                        </p>
+                                    </div>
+                                    <div class="property-actions">
+                                        <lightning-button
+                                            label="Express Interest"
+                                            variant="brand"
+                                            onclick={handleExpressInterest}
+                                            data-id={property.propertyData.Id}
+                                            class="custom-interest-button"
+                                        ></lightning-button>
+                                        <lightning-button
+                                            label="Contact Owner"
+                                            variant="neutral"
+                                            onclick={handleContactOwner}
+                                            data-id={property.propertyData.Id}
+                                            class="custom-contact-button"
+                                        ></lightning-button>
+                                        <lightning-button
+                                            label="View Details"
+                                            variant="neutral"
+                                            onclick={navigateToPropertyDetail}
+                                            data-id={property.propertyData.Id}
+                                            class="custom-view-details-button"
+                                        ></lightning-button>
+                                    </div>
+                                </div>
+                            </div>
+                        </template>
+                        <template if:false={displayedProperties.length}>
+                            <div class="no-results-section slide-in">
+                                <template if:true={noResultsMessage}>
+                                    <div class="no-results-message">
+                                        <lightning-icon icon-name="utility:info" size="medium" class="slds-m-right_small"></lightning-icon>
+                                        <p>{noResultsMessage}</p>
+                                    </div>
+                                </template>
+                                <div class="quotes-section">
+                                    <h3 class="quotes-title">Inspiring Real Estate Quotes</h3>
+                                    <div class="quote-card">
+                                        <p class="quote-text">"Real estate cannot be lost or stolen, nor can it be carried away. Purchased with common sense, paid for in full, and managed with reasonable care, it is about the safest investment in the world." — Franklin D. Roosevelt</p>
+                                    </div>
+                                    <div class="quote-card">
+                                        <p class="quote-text">"The best investment on Earth is earth." — Louis Glickman</p>
+                                    </div>
+                                    <div class="quote-card">
+                                        <p class="quote-text">"Owning a home is a keystone of wealth… both financial affluence and emotional security." — Suze Orman</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </template>
+                    </div>
+                    <div class="show-more-container">
+                        <template if:true={showMoreVisible}>
+                            <lightning-button
+                                label="Show More"
+                                variant="neutral"
+                                onclick={handleShowMore}
+                                class="custom-show-more-button"
+                            ></lightning-button>
+                        </template>
+                        <template if:true={noMorePropertiesError}>
+                            <div class="no-more-properties-error">
+                                <lightning-icon icon-name="utility:warning" size="small" class="slds-m-right_x-small"></lightning-icon>
+                                <span>No more properties to show.</span>
+                            </div>
+                        </template>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+
+    <!-- Express Interest Modal (OOTB SLDS) -->
+    <template if:true={showInterestModal}>
+        <section role="dialog" tabindex="-1" aria-labelledby="interest-modal-heading" aria-modal="true" class="slds-modal slds-modal_small slds-fade-in-open">
+            <div class="slds-modal__container slds-modal__container--constrained">
+                <header class="slds-modal__header">
+                    <lightning-button-icon
+                        icon-name="utility:close"
+                        alternative-text="Close"
+                        variant="bare"
+                        class="slds-modal__close"
+                        onclick={closeInterestModal}
+                    ></lightning-button-icon>
+                    <h2 id="interest-modal-heading" class="slds-modal__title slds-hyphenate">Express Interest</h2>
+                </header>
+                <div class="slds-modal__content slds-p-around_medium">
+                    <lightning-input
+                        label="Name"
+                        type="text"
+                        value={interestName}
+                        onchange={handleInterestNameChange}
+                        required
+                        class="slds-m-bottom_small"
+                    ></lightning-input>
+                    <lightning-input
+                        label="Email"
+                        type="email"
+                        value={interestEmail}
+                        onchange={handleInterestEmailChange}
+                        required
+                        class="slds-m-bottom_small"
+                    ></lightning-input>
+                    <lightning-input
+                        label="Phone"
+                        type="tel"
+                        value={interestPhone}
+                        onchange={handleInterestPhoneChange}
+                        required
+                        class="slds-m-bottom_small"
+                    ></lightning-input>
+                    <lightning-input
+                        label="Budget"
+                        type="number"
+                        value={interestBudget}
+                        onchange={handleInterestBudgetChange}
+                        required
+                        class="slds-m-bottom_small"
+                    ></lightning-input>
+                    <lightning-textarea
+                        label="Reason for Interest"
+                        value={interestReason}
+                        onchange={handleInterestReasonChange}
+                        placeholder="Why are you interested in this property?"
+                        class="slds-m-bottom_small"
+                    ></lightning-textarea>
+                </div>
+                <footer class="slds-modal__footer">
+                    <lightning-button label="Cancel" variant="neutral" onclick={closeInterestModal} class="slds-m-right_small"></lightning-button>
+                    <lightning-button label="Submit" variant="brand" onclick={submitInterest}></lightning-button>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
     </template>
 
-    <!-- COMPARE BAR -->
-    <template if:true={compareList.length}>
-        <div class="compare-bar">
-            <span>{compareList.length} selected</span>
-            <lightning-button label="Compare Now"></lightning-button>
-        </div>
+    <!-- Contact Owner Modal (OOTB SLDS) -->
+    <template if:true={showOwnerModal}>
+        <section role="dialog" tabindex="-1" aria-labelledby="owner-modal-heading" aria-modal="true" class="slds-modal slds-modal_small slds-fade-in-open">
+            <div class="slds-modal__container slds-modal__container--constrained">
+                <header class="slds-modal__header">
+                    <lightning-button-icon
+                        icon-name="utility:close"
+                        alternative-text="Close"
+                        variant="bare"
+                        class="slds-modal__close"
+                        onclick={closeOwnerModal}
+                    ></lightning-button-icon>
+                    <h2 id="owner-modal-heading" class="slds-modal__title slds-hyphenate">Contact Owner</h2>
+                </header>
+                <div class="slds-modal__content slds-p-around_medium">
+                    <template if:true={ownerDetails}>
+                        <div class="slds-grid slds-wrap">
+                            <div class="slds-col slds-size_1-of-1 slds-m-bottom_small">
+                                <p><strong>Name:</strong> {ownerDetails.Name__c}</p>
+                            </div>
+                            <div class="slds-col slds-size_1-of-1 slds-m-bottom_small">
+                                <p><strong>Phone:</strong> {ownerDetails.Phone}</p>
+                            </div>
+                            <div class="slds-col slds-size_1-of-1 slds-m-bottom_small">
+                                <p><strong>Email:</strong> {ownerDetails.Email}</p>
+                            </div>
+                            <div class="slds-col slds-size_1-of-1">
+                                <p><strong>Address:</strong> {ownerDetails.Address}</p>
+                            </div>
+                        </div>
+                    </template>
+                    <template if:false={ownerDetails}>
+                        <p class="slds-text-color_destructive">Owner details not available.</p>
+                    </template>
+                </div>
+                <footer class="slds-modal__footer">
+                    <lightning-button label="Close" variant="neutral" onclick={closeOwnerModal}></lightning-button>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
     </template>
 
+    <!-- Error Message -->
+    <template if:true={error}>
+        <div class="slds-container slds-container_center">
+            <div class="slds-notify slds-notify_alert error-message slide-in" role="alert">
+                <lightning-icon icon-name="utility:warning" size="small" class="slds-m-right_x-small"></lightning-icon>
+                <span>{error}</span>
+            </div>
+        </div>
+    </template>
 </template>
